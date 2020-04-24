@@ -3,10 +3,10 @@ function Toaster() {
      instance.addToast=addToast
      instance.toast=""
      instance.eject=eject
-	instances.timeOut =0
-	instances.start=start
-	instances.stop=stop
-	return instances
+	 instance.timeOut =0
+	instance.start=start
+	instance.stop=stop
+	return instance
 }
 
 var addToast= function(toast){
@@ -25,16 +25,20 @@ var eject= function(){
 
 
 var start= function (seconds){
-
+var toast=this.toast
 var ding =function (){console.log("Ding!")}
-	if (this.toast===""||this.toast===undefined){
+	if (toast===""||toast===undefined){
 		return "Empty, Add toast"
 	
-	} else {
-		this.timeOut= setTimeout(ding,(seconds*1000))
-		this.toast+= " toasted!"
+	} else if(toast.indexOf("toasted!")>=0){
+				var toastedIndex=toast.indexOf("toasted!")
+				this.timeOut= setTimeout(ding,(seconds*1000))
+				this.toast=toast.slice(0,toastedIndex)+"Burnt!"
+			} else {
+				this.timeOut= setTimeout(ding,(seconds*1000))
+				this.toast+= " toasted!"
+			}
 		}
-}
 
 var stop =function(){
  clearTimeout(this.timeOut)
