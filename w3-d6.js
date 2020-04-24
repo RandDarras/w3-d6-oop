@@ -45,15 +45,19 @@ var stop =function(){
  clearTimeout(this.timeOut)
 }
 
-function makeStopwatch() {
+function makeStopwatch(name) {
 	var instance={}
+	instance.name=name
 	instance.time=0
 	instance.start=start
 	instance.id=0
 	instance.stop=stop
 	instance.reset=reset
+	instance.lap=lap
+	instance.lapsArr=[]
+	instance.laps=laps
 	return instance
-}
+}	
 
 
 var stop=function(){
@@ -62,18 +66,31 @@ var stop=function(){
 
 var reset=function(){
 	clearInterval(this.id)
-	return this.time=0
+	 this.time=0
+	 this.lapsArr=[]
 }
 
-var timer=function() {
- 		this.time+=1;
- 		console.log('Elapsed time: ' + this.time + 's.');
- 	}
 
 var start=function(){
+	var internalScope=this
 	var timer=function() {
- 		this.time+=1;
- 		console.log('Elapsed time: ' + this.time + 's.');
+ 		internalScope.time+=1;
+ 		console.log('Elapsed time: ' + internalScope.time + 's. '+internalScope.name);
  	}
  	this.id=setInterval(timer,1000)
+}
+
+var lap=function(){
+	this.lapsArr.push(this.time+"s")
+	return "Adding lap @ "+this.time+"s "+this.name
+}
+var laps=function(){
+	if(this.lapsArr.length===0){
+		return "No Laps"
+	}
+	var str=""
+		for(var i=0; i<this.lapsArr.length; i++){
+			str+= i+1+". " + this.lapsArr[i]+"\n"
+			}
+	return str
 }
